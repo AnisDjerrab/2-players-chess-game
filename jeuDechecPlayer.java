@@ -1673,47 +1673,9 @@ public class jeuDechecPlayer {
                         }
                         frame.repaint();
                     }
-                    List<Integer> listeDeListeTemporaire = new ArrayList<>();
-                    for (JPanel p : panneaux.keySet()) {
-                        if (panneaux.get(p).get(0) == 20 || panneaux.get(p).get(0) == 21 || panneaux.get(p).get(0) == 22 || panneaux.get(p).get(0) == 23 || panneaux.get(p).get(0) == 24 || panneaux.get(p).get(0) == 25) {
-                            List<Integer> temporaire = ex.calculeConcernedCases(panneaux, panneaux.get(p));
-                            temporaire = ex.menaceQueen(panneaux, panneaux.get(p), temporaire);
-                            listeDeListeTemporaire.addAll(temporaire);
-                            if (!temporaire.isEmpty()) {
-                                break;
-                            }
-                            temporaire = ex.calculeInDangerCases(panneaux, panneaux.get(p), List.of(15, 75));
-                            temporaire = ex.menaceQueen(panneaux, panneaux.get(p), temporaire);
-                            listeDeListeTemporaire.addAll(temporaire);
-                            if (!temporaire.isEmpty()) {
-                                break;
-                            }
-                        }
-                    }
-                    if (listeDeListeTemporaire.isEmpty()) {
-                        Humain1APerdu.set(0, true);
-                    } 
-                    List<Integer> listeDeListeTemporaire2 = new ArrayList<>();
-                    for (JPanel p : panneaux.keySet()) {
-                        if (panneaux.get(p).get(0) == 10 || panneaux.get(p).get(0) == 11 || panneaux.get(p).get(0) == 12 || panneaux.get(p).get(0) == 13 || panneaux.get(p).get(0) == 14 || panneaux.get(p).get(0) == 15) {
-                            List<Integer> temporaire = ex.calculeConcernedCasesBlack(panneaux, panneaux.get(p));
-                            temporaire = ex.menaceQueenBlack(panneaux, panneaux.get(p), temporaire);
-                            listeDeListeTemporaire2.addAll(temporaire);
-                            if (!temporaire.isEmpty()) {
-                                break;
-                            }
-                            temporaire = ex.calculeInDangerCases(panneaux, panneaux.get(p), List.of(25, 75));
-                            temporaire = ex.menaceQueenBlack(panneaux, panneaux.get(p), temporaire);
-                            listeDeListeTemporaire2.addAll(temporaire);
-                            if (!temporaire.isEmpty()) {
-                                break;
-                            }
-                        }
-                    }
-                    if (listeDeListeTemporaire2.isEmpty()) {
-                        Humain2APerdu.set(0, true);
-                    }
                     int number = 0;
+                    boolean ReineJoueur1EnDanger = false;
+                    boolean ReineJoueur2EnDanger = false;
                     for (JPanel element : panneaux.keySet()) { 
                         if (panneaux.get(element).get(0) == 24) {
                             if (panneaux.get(element).get(2) == 100) {
@@ -1757,6 +1719,7 @@ public class jeuDechecPlayer {
                             }
                             if (danger.contains(number)) {
                                 element.setBackground(new Color(255, 45, 15));
+                                ReineJoueur1EnDanger = true;
                             }
                             element.repaint();
                         } else if (panneaux.get(element).get(0) == 15) {
@@ -1767,10 +1730,59 @@ public class jeuDechecPlayer {
                             }
                             if (danger.contains(number)) {
                                 element.setBackground(new Color(255, 55, 25));
+                                ReineJoueur2EnDanger = true;
                             }
                             element.repaint();
                         }
                         number++;
+                    }
+                    List<Integer> listeDeListeTemporaire = new ArrayList<>();
+                    for (JPanel p : panneaux.keySet()) {
+                        if (panneaux.get(p).get(0) == 20 || panneaux.get(p).get(0) == 21 || panneaux.get(p).get(0) == 22 || panneaux.get(p).get(0) == 23 || panneaux.get(p).get(0) == 24 || panneaux.get(p).get(0) == 25) {
+                            List<Integer> temporaire = ex.calculeConcernedCases(panneaux, panneaux.get(p));
+                            temporaire = ex.menaceQueen(panneaux, panneaux.get(p), temporaire);
+                            listeDeListeTemporaire.addAll(temporaire);
+                            if (!temporaire.isEmpty()) {
+                                break;
+                            }
+                            temporaire = ex.calculeInDangerCases(panneaux, panneaux.get(p), List.of(15, 75));
+                            temporaire = ex.menaceQueen(panneaux, panneaux.get(p), temporaire);
+                            listeDeListeTemporaire.addAll(temporaire);
+                            if (!temporaire.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+                    if (listeDeListeTemporaire.isEmpty()) {
+                        if (ReineJoueur1EnDanger) {
+                            Humain1APerdu.set(0, true);
+                        } else {
+                            CoupsInactifs.set(0, 200);
+                        }
+                    } 
+                    List<Integer> listeDeListeTemporaire2 = new ArrayList<>();
+                    for (JPanel p : panneaux.keySet()) {
+                        if (panneaux.get(p).get(0) == 10 || panneaux.get(p).get(0) == 11 || panneaux.get(p).get(0) == 12 || panneaux.get(p).get(0) == 13 || panneaux.get(p).get(0) == 14 || panneaux.get(p).get(0) == 15) {
+                            List<Integer> temporaire = ex.calculeConcernedCasesBlack(panneaux, panneaux.get(p));
+                            temporaire = ex.menaceQueenBlack(panneaux, panneaux.get(p), temporaire);
+                            listeDeListeTemporaire2.addAll(temporaire);
+                            if (!temporaire.isEmpty()) {
+                                break;
+                            }
+                            temporaire = ex.calculeInDangerCasesBlack(panneaux, panneaux.get(p), List.of(25, 75));
+                            temporaire = ex.menaceQueenBlack(panneaux, panneaux.get(p), temporaire);
+                            listeDeListeTemporaire2.addAll(temporaire);
+                            if (!temporaire.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+                    if (listeDeListeTemporaire2.isEmpty()) {
+                        if (ReineJoueur2EnDanger) {
+                            Humain2APerdu.set(0, true);
+                        } else {
+                            CoupsInactifs.set(0, 200);
+                        }
                     }
                     if (CoupsInactifs.get(0) > 150 || Humain1APerdu.get(0) == true || Humain2APerdu.get(0) == true) {
                         JPanel overley = new JPanel();
@@ -1806,11 +1818,11 @@ public class jeuDechecPlayer {
                                 label.setText("game draw!");
                                 label.setForeground(new Color(150, 125, 0));
                             } else if (Humain1APerdu.get(0)) {
-                                label.setText("Black Queen!");
+                                label.setText("Black!");
                                 System.out.println("echec et math");
                                 label.setForeground(new Color(50, 225, 50));
                             } else if (Humain2APerdu.get(0)) {
-                                label.setText("White Queen!");
+                                label.setText("White!");
                                 label.setForeground(new Color(50, 225, 50));
                                 System.out.println("victoire");
                             }
